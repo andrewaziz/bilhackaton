@@ -1,18 +1,24 @@
 <%- include header.ejs %>
 <body>
-	<h1><%= title %></h1>
-	<p>Welcome to <%= title %></p>	
-	<div id="input-wrapper" class="input-wrapper">		
-		<input id="brand-input" type="text" />		
-		<button id="submit" class="test">submit</button>
-		<div class="autocomplete"></div>
-	</div>	
-	<div id="results" class="results">
-		<div>
-			<h2 id="brand-name"></h2>
-			<img id="brand-image" src="" />
-			<div id="tester" style="width:600px;height:250px;"></div>
+	<div class="app-container">
+		<h1 class="white">HUR STÅR SIG DITT VARUMÄRKE PÅ ANDRAHANDSMARKNADEN?</h1>	
+		<div id="input-wrapper" class="input-wrapper">		
+			<input id="brand-input" type="text" placeholder="Sök varumärken" />
+			<div class="select-wrapper">
+				<select>
+					<option>Kläder, skor, accessoarer</option>
+				</select>
+			</div>
+			<button id="submit" class="test">SÖK</button>
+			<div class="autocomplete"></div>
+		</div>	
+		<div id="results" class="results">
+			<div>
+				<h2 id="brand-name"></h2>
+				<img id="brand-image" src="" />
+				<div id="tester" style="width:600px;height:250px;"></div>
 
+			</div>
 		</div>
 	</div>
 </body>
