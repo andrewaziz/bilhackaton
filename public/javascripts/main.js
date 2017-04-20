@@ -44,5 +44,21 @@ jQuery(document).ready(function($) {
 		results.addClass('has-result');
 		results.find('#brand-name').text(brandData.name);
 		results.find('#brand-image').attr('src', brandData.logo);
+		var tester = document.getElementById('tester');
+		var trace1 = {
+			x: ['Jan', 'Feb', 'Mar', 'Apr'],
+			y: [Math.round(Math.random() * 30),Math.round(Math.random() * 30), Math.round(Math.random() * 30), Math.round(Math.random() * 30)],
+			type: 'scatter'
+		};
+
+		var trace2 = {
+			x: ['Jan', 'Feb', 'Mar', 'Apr'],
+			y: [Math.round(Math.random() * 30),Math.round(Math.random() * 30), Math.round(Math.random() * 30), Math.round(Math.random() * 30)],
+			type: 'scatter'
+		};
+
+		var data = [trace1, trace2];
+
+		Plotly.newPlot(tester, data);
 	}
 });
