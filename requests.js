@@ -1,5 +1,5 @@
 var request = require('request');
-var querystring = require('querystring')
+var moment = require('moment');
 
 var express = require('express');
 var router = express.Router();
@@ -18,6 +18,7 @@ module.exports = {
 			socket.on('event:getStats', function(data) {
 				brandStats(socket, data);
 			});
+			brandStatsInterval(socket, "hm");
 		});
 	}
 }
@@ -33,15 +34,42 @@ function brandStats(socket, brand) {
 	});
 }
 
+
 function autocompleteStats(socket, brand) {
-	var propertiesObject = {query: brand};
 	var options = {
 		url: 'https://api.plick.se/api/v2/brands/autocomplete.json',
 		qs: {query: brand},
 	};
-	request.get(options, function(error, response, body) {
+	request(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			socket.emit("event:returnAutocomplete", JSON.parse(body));
 		}
 	});
 }
+
+function brandStatsInterval(socket, brand) {
+	var curr = moment();
+	var last = curr.format("YYYYMMDD")
+	var first = curr.format("YYYYMM01");
+	var results = [];
+	for(var i = 0; i < 12; i++) {
+		curr = curr.subtract(1, 'month').endOf('month');
+		last = curr.format("YYYYMMDD")
+		first = curr.format("YYYYMM01");
+		var queries = {from_date: first, to_date: last};
+		var options = {
+			url: 'https://api.plick.se/api/v2/brands/by_slug/' + brand + '/statistics.json',
+			qs: queries,
+		};
+		request(options, function(error, response, body) {
+			if (!error && response.statusCode == 200) {
+				results.push(body);
+				if(results.length == 12) {
+					socket.emit("event:returnStatsInterval", results);
+				}
+			}
+		});
+
+	}
+}
+
