@@ -18,7 +18,6 @@ module.exports = {
 			socket.on('event:getStats', function(data) {
 				brandStats(socket, data);
 			});
-			brandStatsInterval(socket, "hm");
 		});
 	}
 }
@@ -52,11 +51,14 @@ function brandStatsInterval(socket, brand) {
 	var curr = moment();
 	var last = curr.format("YYYYMMDD")
 	var first = curr.format("YYYYMM01");
+	var months = [];
 	var results = [];
 	for(var i = 0; i < 12; i++) {
 		curr = curr.subtract(1, 'month').endOf('month');
 		last = curr.format("YYYYMMDD")
 		first = curr.format("YYYYMM01");
+		monthName = curr.format('MMM');
+		months.push(monthName);
 		var queries = {from_date: first, to_date: last};
 		var options = {
 			url: 'https://api.plick.se/api/v2/brands/by_slug/' + brand + '/statistics.json',
@@ -66,7 +68,7 @@ function brandStatsInterval(socket, brand) {
 			if (!error && response.statusCode == 200) {
 				results.push(JSON.parse(body));
 				if(results.length == 12) {
-					socket.emit("event:returnStatsInterval", results);
+					socket.emit("event:returnStatsInterval", {months: months, body: results});
 				}
 			}
 		});
