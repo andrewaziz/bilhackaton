@@ -12,7 +12,7 @@ module.exports = {
 		self.io = require('socket.io')(server);
 		var io = this.io;
 		io.on('connection', function (socket) {
-			socket.on('event:getAutocomple', function (data) {
+			socket.on('event:getAutocomplete', function (data) {
 				autocompleteStats(socket, data);
 			});
 			socket.on('event:getStats', function(data) {
