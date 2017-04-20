@@ -14,11 +14,11 @@
 		});
 
 		$('body').keydown(function(e) {
-		    var code = e.keyCode || e.which;
-		    if (code == '9') {
-		    	e.preventDefault();
-		    }
-		 });
+			var code = e.keyCode || e.which;
+			if (code == '9') {
+				e.preventDefault();
+			}
+		});
 
 		brandInput.on('keyup', function(e) {
 			var query = $(this).val();
@@ -54,21 +54,71 @@
 		});
 
 		socket.on("event:returnStatsInterval", function(data) {
-			views = [];
+			var views = [];
+			var likes = [];
+			var sold = [];
+			var count = [];
 			for(d of data.body) {
-				console.log(d.brand.view_count);
+				console.log(d.brand);
 				views.push(d.brand.view_count);
-			}
+				likes.push(d.brand.likes_count);
+				sold.push(d.brand.sold_count);
+				count.push(d.brand.count);
+			}	
 			var tester = document.getElementById('tester');
-			var trace1 = {
+			var viewsTrace = {
 				x: data.months	,
 				y: views,
 				type: 'scatter'
 			};
 
-			var data = [trace1];
+			var likesTrace = {
+				x: data.months	,
+				y: likes,
+				type: 'scatter'
+			};
 
-			Plotly.newPlot(tester, data);
+			var soldTrace = {
+				x: data.months	,
+				y: sold,
+				type: 'scatter',
+				name: 'Sålda artiklar',
+			};
+
+			var countTrace = {
+				x: data.months	,
+				y: count,
+				type: 'scatter',
+				name: 'Alla upplagda artiklar',
+			};
+
+			var viewsData = [viewsTrace];
+
+			var viewsLayout = {
+				title: 'SYNLIGHET'
+			};
+
+			var likesData = [likesTrace];
+			
+
+			var likesLayout = {
+				title: 'LIKES'
+			};
+
+			var soldData = [soldTrace, countTrace];
+
+
+			var soldLayout = {
+				title: 'SÅLDA ARTIKLAR'
+			};
+
+			var viewsPlot = document.getElementById('views-plot');
+			var likesPlot = document.getElementById('likes-plot');
+			var soldPlot = document.getElementById('sold-plot');
+
+			Plotly.newPlot(viewsPlot, viewsData, viewsLayout);
+			Plotly.newPlot(likesPlot, likesData, likesLayout);
+			Plotly.newPlot(soldPlot, soldData, soldLayout);
 		});
 
 		function renderStats(brandData) {
