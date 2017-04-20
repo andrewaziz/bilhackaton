@@ -1,5 +1,5 @@
 var request = require('request');
-
+var querystring = require('querystring')
 
 var express = require('express');
 var router = express.Router();
@@ -35,13 +35,12 @@ function brandStats(socket, brand) {
 }
 
 function autocompleteStats(socket, brand) {
-	console.log('https://api.plick.se/api/v2/brands/autocomplete');
+	var propertiesObject = {query: brand};
 	var options = {
-		url: 'https://api.plick.se/api/v2/brands/autocomplete',
-		qs: {query: brand}
+		url: 'https://api.plick.se/api/v2/brands/autocomplete.json',
+		qs: {query: brand},
 	};
-	request(options, function(error, response, body) {
-		console.log(response);
+	request.get(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			socket.emit("event:returnAutocomplete", JSON.parse(body));
 		}
