@@ -18,7 +18,6 @@ module.exports = {
 			socket.on('event:getStats', function(data) {
 				brandStats(socket, data);
 			});
-			autocompleteStats(socket, "hm");
 		});
 	}
 }
