@@ -14,18 +14,22 @@ a {
 
 .logo {
 	&.loading {
-		-webkit-animation:spin 1.5s linear 3s;
-		-moz-animation:spin 1.5s linear 3s;
-		animation:spin 1.5s linear 3s;
+		-webkit-animation:spin 1.5s linear infinite;
+		-moz-animation:spin 1.5s linear infinite;
+		animation:spin 1.5s linear infinite;
 	}	
 }
 
-.app-container {
+.search-container {
 	width: 100%;
 	height: 100%;
 	background-image: url('../images/bakgrund.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+.results-container {
+	background: white;
 }
 
 .results {

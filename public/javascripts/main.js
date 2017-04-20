@@ -1,7 +1,7 @@
 	jQuery(document).ready(function($) {
 		var inputWrapper = $('#input-wrapper');
 		var autocomplete = $('.autocomplete');
-		console.log(autocomplete);
+		var logo = $('#logo');
 		var brandInput = inputWrapper.find('input');
 		var inputAutoComplete = inputWrapper.find('.autocomplete .suggestion');
 		var submit = $('#submit');
@@ -21,10 +21,11 @@
 		 });
 
 		brandInput.on('keyup', function(e) {
-			var query = $(this).val();
+			var query = $(this).val().toLowerCase();
+			console.log(query);
 			if(e.keyCode == 9) {
 				e.preventDefault();
-				$(this).val(inputAutoComplete.text());
+				$(this).val(inputAutoComplete.val());
 			}
 			else if(e.keyCode == 8) {
 				inputAutoComplete.text("");
@@ -36,16 +37,20 @@
 		});
 
 		socket.on('event:returnAutocomplete', function(data) {
-			var suggested = (data.brands && data.brands.length > 0 ? data.brands[0].name : '');
-			inputAutoComplete.text(suggested);
+			var suggestedName = (data.brands && data.brands.length > 0 ? data.brands[0].name : '');
+			var suggestedSlug = (data.brands && data.brands.length > 0 ? data.brands[0].slug : '');
+			inputAutoComplete.text(suggestedName);
+			inputAutoComplete.val(suggestedSlug);
 		});
 
 		submit.on('click', function(e) {
 			e.preventDefault();
 			var query = brandInput.val();
+			console.log(query);
 			socket.emit('event:getStats', query);
-			inputAutoComplete.removeClass('show');
+			inputAutoComplete.parent().removeClass('show');
 			inputAutoComplete.text("");
+			logo.addClass('loading');
 		});
 
 		socket.on('event:returnStats', function(data) {
@@ -75,5 +80,9 @@
 			results.addClass('has-result');
 			results.find('#brand-name').text(brandData.name);
 			results.find('#brand-image').attr('src', brandData.logo);
+			logo.removeClass('loading');
+			var wHeight = $(window).height() + "px";
+			console.log(wHeight);
+			$("html, body").animate({ scrollTop: wHeight });
 		}
 	});

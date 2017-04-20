@@ -1,11 +1,11 @@
 <%- include header.ejs %>
 <body>
-	<div class="app-container table">
+	<div class="search-container table">
 		<div class="container table-cell">
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="text-center">
-						<img id="logo" class="center" src="/images/logo-vit.png" />
+						<img id="logo" class="center logo" src="/images/logo-vit.png" />
 						<div class="title-wrapper">
 							<h1 class="white">HUR STÅR SIG DITT VARUMÄRKE PÅ ANDRAHANDSMARKNADEN?</h1>	
 						</div>
@@ -22,18 +22,22 @@
 								</div>
 							</div>
 							<input type="submit" id="submit" class="test" value="SÖK"/>
-						</div>
-						<div id="results" class="results">
-							<div>
-								<h2 id="brand-name"></h2>
-								<img id="brand-image" src="" />
-								<div id="tester" style="width:600px;height:250px;"></div>
-
-							</div>
-						</div>
+						</div>						
 					</div>
 				</div>
 			 </div>			
+		</div>
+	</div>
+	<div class="results-container">
+		<div id="results" class="results">
+			<div>
+				<div class="result-header text-center">
+					<h2 id="brand-name"></h2>
+					<img id="brand-image" src="" />
+				</div>
+				<div id="tester" class="center" style="width:600px;height:250px;"></div>
+
+			</div>
 		</div>
 	</div>
 </body>
