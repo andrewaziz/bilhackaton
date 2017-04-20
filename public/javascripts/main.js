@@ -41,14 +41,14 @@
 		});
 
 		socket.on("event:returnStatsInterval", function(data) {
-			var views = []
-			for(d of data) {
-				console.log(d);
+			views = [];
+			for(d of data.body) {
+				console.log(d.brand.view_count);
 				views.push(d.brand.view_count);
 			}
 			var tester = document.getElementById('tester');
 			var trace1 = {
-				x: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+				x: data.months	,
 				y: views,
 				type: 'scatter'
 			};
