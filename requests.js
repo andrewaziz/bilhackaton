@@ -30,6 +30,7 @@ function brandStats(socket, brand) {
 	request(options, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			socket.emit("event:returnStats", JSON.parse(body));
+			brandStatsInterval(socket, brand);
 		}
 	});
 }
@@ -63,7 +64,7 @@ function brandStatsInterval(socket, brand) {
 		};
 		request(options, function(error, response, body) {
 			if (!error && response.statusCode == 200) {
-				results.push(body);
+				results.push(JSON.parse(body));
 				if(results.length == 12) {
 					socket.emit("event:returnStatsInterval", results);
 				}

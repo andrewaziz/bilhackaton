@@ -1,18 +1,19 @@
 jQuery(document).ready(function($) {
-	var tester = document.getElementById('tester');
-	var trace1 = {
-		x: ['Jan', 'Feb', 'Mar', 'Apr'],
-		y: [Math.round(Math.random() * 30),Math.round(Math.random() * 30), Math.round(Math.random() * 30), Math.round(Math.random() * 30)],
-		type: 'scatter'
-	};
+	// socket = io.connect('/');
+	// var views = []
+	// socket.on("event:returnStatsInterval", function(data) {
+	// 	for(d of data) {
+	// 		views.push(d.brand.view_count);
+	// 	}
+	// })
+	// var tester2 = document.getElementById('tester');
+	// var trace1 = {
+	// 	x: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+	// 	y: views,
+	// 	type: 'scatter'
+	// };
 
-	var trace2 = {
-		x: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul'],
-		y: [Math.round(Math.random() * 30),Math.round(Math.random() * 30), Math.round(Math.random() * 30), Math.round(Math.random() * 30)],
-		type: 'scatter'
-	};
+	// var data = [trace1];
 
-	var data = [trace1, trace2];
-
-	Plotly.newPlot(tester, data);
+	//Plotly.newPlot(tester, data);
 });
