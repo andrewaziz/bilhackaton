@@ -1,1 +1,1 @@
-body{padding:50px;font:14px "Lucida Grande",Helvetica,Arial,sans-serif}a{color:#00B7FF}
+body{padding:50px;font:14px "Lucida Grande",Helvetica,Arial,sans-serif}a{color:#00B7FF}.results{max-height:0;transition:max-height 300ms ease;overflow:hidden}.results.has-result{max-height:500px}#brand-name{font-size:36px;margin-right:60px;display:inline-block}#brand-image{height:60px;display:inline-block}

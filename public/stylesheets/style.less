@@ -6,3 +6,23 @@ body {
 a {
   color: #00B7FF;
 }
+
+.results {
+	max-height: 0;
+	transition: max-height 300ms ease;
+	overflow: hidden;
+	&.has-result {
+		max-height: 500px;
+	}
+}
+
+#brand-name {
+	font-size: 36px;
+	margin-right: 60px;
+	display: inline-block;
+}
+
+#brand-image {
+	height: 60px;
+	display: inline-block;
+}

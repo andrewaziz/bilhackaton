@@ -1,16 +1,12 @@
 jQuery(document).ready(function($) {
 	var brandInput = $('#brand-input');
 	var submit = $('#submit');
-	var results = $('#results');
+	var results = $('.results');	
 
 	socket = io.connect('/');
 	$('.test').on('click', function(){ 
 		console.log("test");
 		socket.emit('event:test', "this is a socket test");
-	});
-
-	socket.on('event:hmstats', function(data) {
-		console.log(data);
 	});
 
 	brandInput.on('keydown', function(e) {
@@ -30,6 +26,13 @@ jQuery(document).ready(function($) {
 	});
 
 	socket.on('event:returnStats', function(data) {
-		results.text(data);
+		console.log("got result: ", data);
+		renderStats(data.brand);
 	});
+
+	function renderStats(brandData) {
+		results.addClass('has-result');
+		results.find('#brand-name').text(brandData.name);
+		results.find('#brand-image').attr('src', brandData.logo);
+	}
 });
