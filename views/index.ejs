@@ -1,24 +1,37 @@
 <%- include header.ejs %>
 <body>
-	<div class="app-container">
-		<h1 class="white">HUR STÅR SIG DITT VARUMÄRKE PÅ ANDRAHANDSMARKNADEN?</h1>	
-		<div id="input-wrapper" class="input-wrapper">		
-			<input id="brand-input" type="text" placeholder="Sök varumärken" />
-			<div class="select-wrapper">
-				<select>
-					<option>Kläder, skor, accessoarer</option>
-				</select>
-			</div>
-			<button id="submit" class="test">SÖK</button>
-			<div class="autocomplete"></div>
-		</div>	
-		<div id="results" class="results">
-			<div>
-				<h2 id="brand-name"></h2>
-				<img id="brand-image" src="" />
-				<div id="tester" style="width:600px;height:250px;"></div>
+	<div class="app-container table">
+		<div class="container table-cell">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="text-center">
+						<img class="center" src="/images/logo-vit.png" />
+						<div class="title-wrapper">
+							<h1 class="white">HUR STÅR SIG DITT VARUMÄRKE PÅ ANDRAHANDSMARKNADEN?</h1>	
+						</div>
+						<div class="search-wrapper">
+							<div id="input-wrapper" class="input-wrapper">		
+								<input id="brand-input" type="text" placeholder="Sök varumärken" />
+								<div class="select-wrapper">
+									<select>
+										<option>Kläder, skor, accessoarer</option>
+									</select>
+								</div>							
+								<div class="autocomplete"></div>
+							</div>
+							<button id="submit" class="test">SÖK</button>
+						</div>
+						<div id="results" class="results">
+							<div>
+								<h2 id="brand-name"></h2>
+								<img id="brand-image" src="" />
+								<div id="tester" style="width:600px;height:250px;"></div>
 
-			</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			 </div>			
 		</div>
 	</div>
 </body>

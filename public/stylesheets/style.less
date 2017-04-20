@@ -1,5 +1,6 @@
-body {
-  padding: 50px;  
+body, html {
+	height: 100%;
+	width: 100%;  
   font: 14px "open sans", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -7,8 +8,11 @@ a {
   color: #00B7FF;
 }
 
+
 .app-container {
-	background-image: url('../assets/bakgrund.jpg');
+	width: 100%;
+	height: 100%;
+	background-image: url('../images/bakgrund.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -30,10 +34,37 @@ a {
 	color: #007fad;
 }
 
+.text-center {
+	text-align: center;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+.table {
+	display: table;
+}
+
+.table-cell {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.title-wrapper {
+	width: 500px;
+	margin: 20px auto;
+	h1 {
+		font-weight: 100;
+	}
+}
+
 .input-wrapper {
-	width: auto;
+	width: 510px;
 	border: 1px solid rgba(0,0,0,0.26);
 	position: relative;
+	display: inline-block;
+	background: white;
 	&:after {
 		position: absolute;
 		top: 8px;
@@ -72,6 +103,7 @@ a {
 
 #submit {
 	margin-left: -5px;
+	margin-top: -2px;
 }
 
 button {
