@@ -1,7 +1,9 @@
 	jQuery(document).ready(function($) {
 		var inputWrapper = $('#input-wrapper');
+		var autocomplete = $('.autocomplete');
+		console.log(autocomplete);
 		var brandInput = inputWrapper.find('input');
-		var inputAutoComplete = inputWrapper.find('.autocomplete');
+		var inputAutoComplete = inputWrapper.find('.autocomplete .suggestion');
 		var submit = $('#submit');
 		var results = $('.results');	
 
@@ -11,6 +13,13 @@
 			socket.emit('event:test', "this is a socket test");
 		});
 
+		$('body').keydown(function(e) {
+		    var code = e.keyCode || e.which;
+		    if (code == '9') {
+		    	e.preventDefault();
+		    }
+		 });
+
 		brandInput.on('keyup', function(e) {
 			var query = $(this).val();
 			if(e.keyCode == 9) {
@@ -19,8 +28,10 @@
 			}
 			else if(e.keyCode == 8) {
 				inputAutoComplete.text("");
+				autocomplete.removeClass('show');
 			} else if(query.length > 2) {
 				socket.emit('event:getAutocomplete', query);
+				autocomplete.addClass('show');
 			}
 		});
 
@@ -33,6 +44,8 @@
 			e.preventDefault();
 			var query = brandInput.val();
 			socket.emit('event:getStats', query);
+			inputAutoComplete.removeClass('show');
+			inputAutoComplete.text("");
 		});
 
 		socket.on('event:returnStats', function(data) {

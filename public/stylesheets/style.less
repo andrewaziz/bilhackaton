@@ -1,3 +1,7 @@
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 body, html {
 	height: 100%;
 	width: 100%;  
@@ -8,6 +12,13 @@ a {
   color: #00B7FF;
 }
 
+.logo {
+	&.loading {
+		-webkit-animation:spin 1.5s linear 3s;
+		-moz-animation:spin 1.5s linear 3s;
+		animation:spin 1.5s linear 3s;
+	}	
+}
 
 .app-container {
 	width: 100%;
@@ -59,6 +70,28 @@ a {
 	}
 }
 
+.autocomplete {
+    position: absolute;
+    /* left: 5px; */
+    bottom: -36px;
+    /* color: white; */
+    height: 36px;
+    max-height: 0px;    
+    background: white;
+    width: 300px;
+    text-align: left;
+    padding-left: 5px;
+    transition: max-height 300ms ease;
+    vertical-align: middle;
+    &.show {
+    	max-height: 36px;
+    }
+}
+
+.suggestion {
+	line-height: 36px;
+}
+
 .input-wrapper {
 	width: 510px;
 	border: 1px solid rgba(0,0,0,0.26);
@@ -106,7 +139,7 @@ a {
 	margin-top: -2px;
 }
 
-button {
+button, input[type="submit"] {
 	background-color: #007fad;
 	color: white !important;
 	border: none;

@@ -5,7 +5,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="text-center">
-						<img class="center" src="/images/logo-vit.png" />
+						<img id="logo" class="center" src="/images/logo-vit.png" />
 						<div class="title-wrapper">
 							<h1 class="white">HUR STÅR SIG DITT VARUMÄRKE PÅ ANDRAHANDSMARKNADEN?</h1>	
 						</div>
@@ -17,9 +17,11 @@
 										<option>Kläder, skor, accessoarer</option>
 									</select>
 								</div>							
-								<div class="autocomplete"></div>
+								<div class="autocomplete">
+									<span class="suggestion"></span>
+								</div>
 							</div>
-							<button id="submit" class="test">SÖK</button>
+							<input type="submit" id="submit" class="test" value="SÖK"/>
 						</div>
 						<div id="results" class="results">
 							<div>
