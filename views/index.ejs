@@ -11,33 +11,39 @@
 						</div>
 						<div class="search-wrapper">
 							<div id="input-wrapper" class="input-wrapper">		
-								<input id="brand-input" type="text" placeholder="Sök varumärken" />
-								<div class="select-wrapper">
+								<input id="brand-input" type="text" placeholder="Sök varumärken" slug=""/>
+								<input id="compare-input" type="text" placeholder="Jämför med" slug=""/>
+								<!-- <div class="select-wrapper">
 									<select>
 										<option>Kläder, skor, accessoarer</option>
 									</select>
-								</div>							
+								</div> -->
 								<div class="autocomplete">
 									<span class="suggestion"></span>
 								</div>
+								<div class="compare-autocomplete">
+									<span class="compare-suggestion"></span>
+								</div>
 							</div>
 							<input type="submit" id="submit" class="test" value="SÖK"/>
-						</div>						
+						</div>
+						<button class="button-wide center" id="compare-toggle"> JÄMFÖR </button>
+						<button class="button-wide center" id="regular-toggle"> ENKEL SÖKNING </button>
 					</div>
 				</div>
 			 </div>			
 		</div>
 	</div>
 	<div class="results-container">
-		<div id="results" class="results">
+		<div id="results" class="results center">
 			<div>
 				<div class="results-header text-center center">
-					<h2 id="brand-name"></h2>
 					<img id="brand-image" src="" />
 				</div>
-				<div id="sold-plot" style="width:980px;height:500px;"></div>
-				<div id="likes-plot" style="width:980px;height:500px;"></div>
-				<div id="views-plot" style="width:980px;height:500px;"></div>
+				<div id="sold-plot" class="plot"></div>
+				<div id="likes-plot" class="plot"></div>
+				<div id="views-plot" class="plot"></div>
+				<div id="convos-plot" class="plot"></div>
 			</div>
 		</div>
 	</div>

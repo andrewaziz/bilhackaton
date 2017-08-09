@@ -12,13 +12,21 @@ a {
   color: #00B7FF;
 }
 
-.logo {
-	height: 80px;
+body {
 	&.loading {
-		-webkit-animation:spin 1.5s linear infinite;
-		-moz-animation:spin 1.5s linear infinite;
-		animation:spin 1.5s linear infinite;
-	}	
+		button, input[type="submit"] {
+			pointer-events: none;
+		}
+		.logo {
+			-webkit-animation:spin 1.5s linear infinite;
+			-moz-animation:spin 1.5s linear infinite;
+			animation:spin 1.5s linear infinite;
+		}
+	}
+}
+
+.logo {
+	height: 80px;	
 }
 
 .search-container {
@@ -88,11 +96,13 @@ a {
     height: 36px;
     max-height: 0px;    
     background: white;
-    width: 300px;
+    width: 408px;
     text-align: left;
     padding-left: 5px;
-    transition: max-height 300ms ease;
+    transition: max-height 150ms ease;
     vertical-align: middle;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
     &.show {
     	max-height: 36px;
     }
@@ -103,18 +113,28 @@ a {
 }
 
 .input-wrapper {
-	width: 610px;
+	width: 410px;
 	border: 1px solid rgba(0,0,0,0.26);
 	position: relative;
 	display: inline-block;
 	background: white;
-	&:after {
-		position: absolute;
-		top: 12px;
-		left: 400px;
-		content: '';
-		border-right: 1px solid rgba(0,0,0,0.26);
-		height: 20px;
+	border-radius: 2px;	
+	input {
+		display: block;
+	}
+	&.compare {
+		input {
+			width: 202px;
+			display: inline-block;
+		}
+		&:after {
+			position: absolute;
+			top: 12px;
+			left: 200px;
+			content: '';
+			border-right: 1px solid rgba(0,0,0,0.26);
+			height: 20px;
+		}
 	}
 }
 
@@ -133,6 +153,19 @@ a {
 	}
 }
 
+.search-wrapper {
+	margin: 40px auto;
+	margin-bottom: 80px;
+}
+
+.compare-search-wrapper {
+	display: none;
+}
+
+.button-wide {
+	width: 250px;
+}
+
 #brand-name {
 	font-size: 36px;
 	margin-right: 60px;
@@ -140,7 +173,7 @@ a {
 }
 
 #brand-image {
-	height: 60px;
+	height: 100px;
 	display: inline-block;
 }
 
@@ -149,18 +182,36 @@ a {
 	margin-top: -2px;
 }
 
+#compare-toggle {	
+	display: block;
+}
+
+#regular-toggle {
+	display: none;
+}
+
+#brand-input {
+}
+
+#compare-input {
+	display: none;
+}
+
 button, input[type="submit"] {
 	background-color: #007fad;
 	color: white !important;
 	border: none;
-	height: 46px;
+	height: 47px;
 	width: 80px;
+	&:hover {
+		background-color: fadeOut(#007fad, 20%);
+	}
 }
 
 input {
 	padding-left: 5px;
 	height: 46px;
-	width: 400px;
+	width: 404px;
 	border: none;
 	outline: 0;
 }
@@ -169,4 +220,43 @@ select {
 	color: #007fad;
 	border: none;
 	background: white;
+}
+
+.plot {
+	width: 980px;
+	height: 500px;
+}
+
+@media(max-width: 768px) {
+	.plot {
+		max-width: 425px;
+		height: 300px;
+	}
+	h1 {
+		font-size: 24px !important;
+	}	
+	.title-wrapper {
+		width: 100%;
+	}
+	.input-wrapper {
+		width: 100%;
+	}
+	.autocomplete {
+		width: 100%;
+		.suggestion {
+			width: 100%;
+		}
+	}
+	input {
+		width: 100%;
+	}
+	.table {
+		display: block;
+	}
+	.table-cell {
+		display: block;
+	}
+	.search-container {
+		padding: 60px 15px 0px 15px;
+	}
 }

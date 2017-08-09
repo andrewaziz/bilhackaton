@@ -2,14 +2,19 @@
 		var inputWrapper = $('#input-wrapper');
 		var autocomplete = $('.autocomplete');
 		var logo = $('#logo');
-		var brandInput = inputWrapper.find('input');
-		var inputAutoComplete = inputWrapper.find('.autocomplete .suggestion');
+		var body = $('body');
+		var inputs = inputWrapper.find('input');
+		var brandInput = inputWrapper.find('#brand-input');
+		var inputAutoComplete = inputWrapper.find('.suggestion');
 		var submit = $('#submit');
-		var results = $('.results');	
+		var results = $('.results');
+		var compareButton = $('#compare-toggle');
+		var regularButton = $('#regular-toggle');
+		var compareInput = $('#compare-input');
+		var compare = false;
 
 		socket = io.connect('/');
 		$('.test').on('click', function(){ 
-			console.log("test");
 			socket.emit('event:test', "this is a socket test");
 		});
 
@@ -20,16 +25,20 @@
 		    }
 		 });
 
-		brandInput.on('keyup', function(e) {
+		inputs.on('keyup', function(e) {
 			var query = $(this).val().toLowerCase();
-			console.log(query);
 			if(e.keyCode == 9) {
 				e.preventDefault();
-				$(this).val(inputAutoComplete.val());
-			}
-			else if(e.keyCode == 8) {
+				$(this).attr('slug', inputAutoComplete.attr('slug'));
+				$(this).val(inputAutoComplete.text());
 				inputAutoComplete.text("");
 				autocomplete.removeClass('show');
+			}
+			else if(e.keyCode == 8 && query.length < 3) {
+				inputAutoComplete.text("");
+				autocomplete.removeClass('show');
+			} else if(e.keyCode == 13) {
+				submit.click();
 			} else if(query.length > 2) {
 				socket.emit('event:getAutocomplete', query);
 				autocomplete.addClass('show');
@@ -40,17 +49,51 @@
 			var suggestedName = (data.brands && data.brands.length > 0 ? data.brands[0].name : '');
 			var suggestedSlug = (data.brands && data.brands.length > 0 ? data.brands[0].slug : '');
 			inputAutoComplete.text(suggestedName);
-			inputAutoComplete.val(suggestedSlug);
+			inputAutoComplete.attr('slug', suggestedSlug);
 		});
 
 		submit.on('click', function(e) {
 			e.preventDefault();
-			var query = brandInput.val();
-			console.log(query);
-			socket.emit('event:getStats', query);
+			var slug = brandInput.attr('slug');			
+			var query = slug != '' && slug.length != 0 ? slug : brandInput.val();
+			if(compare) {
+				var slug = brandInput.attr('slug');			
+				var query = slug != '' && slug.length != 0 ? slug : brandInput.val();
+				var compareSlug = compareInput.attr('slug');
+				var compareQuery = compareSlug != '' && compareSlug.length != 0 ? compareSlug : compareInput.val();
+				socket.emit('event:getCompareStats', [query, compareQuery]);
+			} else {
+				var slug = brandInput.attr('slug');			
+				var query = slug != '' && slug.length != 0 ? slug : brandInput.val();
+				socket.emit('event:getStats', query);
+			}
 			inputAutoComplete.parent().removeClass('show');
 			inputAutoComplete.text("");
-			logo.addClass('loading');
+			body.addClass('loading');
+			brandInput.attr('slug', '');
+			compareInput.attr('slug', '');
+		});
+
+		compareButton.on('click', function(e) {
+			compare = true;
+			$(this).fadeOut(120);
+			setTimeout(function() { 
+				inputWrapper.addClass('compare');
+				compareInput.fadeIn(125); 
+				regularButton.fadeIn(120);
+			}, 115);
+		});
+
+		regularButton.on('click', function(e) {
+			compare = false;
+			$(this).fadeOut(120);
+			setTimeout(function() {				
+				compareInput.fadeOut(120); 
+				compareButton.fadeIn(120);
+				setTimeout(function() {
+					inputWrapper.removeClass('compare');
+				}, 125);
+			}, 125);
 		});
 
 		socket.on('event:returnStats', function(data) {
@@ -59,79 +102,186 @@
 		});
 
 		socket.on("event:returnStatsInterval", function(data) {
-			logo.removeClass('loading');
+			body.removeClass('loading');
 			var wHeight = $(window).height() + "px";
+			console.log("stats", data);
 			$("html, body").animate({ scrollTop: wHeight });
-					var views = [];
-					var likes = [];
-					var sold = [];
-					var count = [];
-					for(d of data.body) {
-						console.log(d.brand);
-						views.push(d.brand.view_count);
-						likes.push(d.brand.likes_count);
-						sold.push(d.brand.sold_count);
-						count.push(d.brand.count);
-					}	
-					var tester = document.getElementById('tester');
-					var viewsTrace = {
-						x: data.months	,
-						y: views,
-						type: 'scatter'
-					};
+			if(!data.compare) {
+				var views = [];
+				var likes = [];
+				var sold = [];
+				var count = [];
+				var convos = [];
+				for(d of data.body) {
+					views.push(d.brand.view_count);
+					likes.push(d.brand.likes_count);
+					sold.push(d.brand.sold_count);
+					count.push(d.brand.count);
+					convos.push(d.brand.conversations_count);
+				}	
+				var tester = document.getElementById('tester');
+				var reversedMonths = data.months.reverse();
+				var viewsTrace = {
+					x: reversedMonths,
+					y: views,
+					type: 'scatter'
+				};
 
-					var likesTrace = {
-						x: data.months	,
-						y: likes,
-						type: 'scatter'
-					};
+				var likesTrace = {
+					x: reversedMonths,
+					y: likes,
+					type: 'scatter'
+				};
 
-					var soldTrace = {
-						x: data.months	,
-						y: sold,
-						type: 'scatter',
-						name: 'Sålda artiklar',
-					};
+				var soldTrace = {
+					x: reversedMonths,
+					y: sold,
+					type: 'scatter',
+					name: 'Sålda artiklar',
+				};
 
-					var countTrace = {
-						x: data.months	,
-						y: count,
-						type: 'scatter',
-						name: 'Alla upplagda artiklar',
-					};
+				var countTrace = {
+					x: reversedMonths,
+					y: count,
+					type: 'scatter',
+					name: 'Alla upplagda artiklar',
+				};
 
-					var viewsData = [viewsTrace];
+				var convosTrace = {
+					x: reversedMonths,
+					y: convos,
+					type: 'scatter',
+					name: 'Konversationer',
+				};
 
-					var viewsLayout = {
-						title: 'SYNLIGHET'
-					};
+				var convosData = [convosTrace];
 
-					var likesData = [likesTrace];
-					
+				var convosLayout = {
+					title: 'KONVERSATIONER'
+				};
 
-					var likesLayout = {
-						title: 'LIKES'
-					};
+				var viewsData = [viewsTrace];
 
-					var soldData = [soldTrace, countTrace];
+				var viewsLayout = {
+					title: 'SYNLIGHET'
+				};
+
+				var likesData = [likesTrace];
+				
+
+				var likesLayout = {
+					title: 'LIKES'
+				};
+
+				var soldData = [soldTrace, countTrace];
 
 
-					var soldLayout = {
-						title: 'SÅLDA ARTIKLAR'
-					};
+				var soldLayout = {
+					title: 'SÅLDA ARTIKLAR'
+				};
 
-					var viewsPlot = document.getElementById('views-plot');
-					var likesPlot = document.getElementById('likes-plot');
-					var soldPlot = document.getElementById('sold-plot');
+				var viewsPlot = document.getElementById('views-plot');
+				var likesPlot = document.getElementById('likes-plot');
+				var soldPlot = document.getElementById('sold-plot');
+				var convosPlot = document.getElementById('convos-plot');
 
-					Plotly.newPlot(viewsPlot, viewsData, viewsLayout);
-					Plotly.newPlot(likesPlot, likesData, likesLayout);
-					Plotly.newPlot(soldPlot, soldData, soldLayout);
-				});
+				Plotly.newPlot(viewsPlot, viewsData, viewsLayout);
+				Plotly.newPlot(likesPlot, likesData, likesLayout);
+				Plotly.newPlot(soldPlot, soldData, soldLayout);
+				Plotly.newPlot(convosPlot, convosData, convosLayout);
+			} else {
+				var views = [[],[]];
+				var likes = [[],[]];
+				var sold = [[],[]];
+				var count = [[],[]];
+				var convos = [[],[]];
+				for(d of data.body[0]) {
+					views[0].push(d.brand.view_count);
+					likes[0].push(d.brand.likes_count);
+					sold[0].push(d.brand.sold_count);
+					count[0].push(d.brand.count);
+					convos[0].push(d.brand.conversations_count);
+					views[1].push(d.brand.view_count);
+					likes[1].push(d.brand.likes_count);
+					sold[1].push(d.brand.sold_count);
+					count[1].push(d.brand.count);
+					convos[1].push(d.brand.conversations_count);
+				}	
+				var tester = document.getElementById('tester');
+				var reversedMonths = data.months.reverse();
+				var viewsTrace = {
+					x: reversedMonths,
+					y: views,
+					type: 'scatter'
+				};
+
+				var likesTrace = {
+					x: reversedMonths,
+					y: likes,
+					type: 'scatter'
+				};
+
+				var soldTrace = {
+					x: reversedMonths,
+					y: sold,
+					type: 'scatter',
+					name: 'Sålda artiklar',
+				};
+
+				var countTrace = {
+					x: reversedMonths,
+					y: count,
+					type: 'scatter',
+					name: 'Alla upplagda artiklar',
+				};
+
+				var convosTrace = {
+					x: reversedMonths,
+					y: convos,
+					type: 'scatter',
+					name: 'Konversationer',
+				};
+
+				var convosData = [convosTrace];
+
+				var convosLayout = {
+					title: 'KONVERSATIONER'
+				};
+
+				var viewsData = [viewsTrace];
+
+				var viewsLayout = {
+					title: 'SYNLIGHET'
+				};
+
+				var likesData = [likesTrace];
+				
+
+				var likesLayout = {
+					title: 'LIKES'
+				};
+
+				var soldData = [soldTrace, countTrace];
+
+
+				var soldLayout = {
+					title: 'SÅLDA ARTIKLAR'
+				};
+
+				var viewsPlot = document.getElementById('views-plot');
+				var likesPlot = document.getElementById('likes-plot');
+				var soldPlot = document.getElementById('sold-plot');
+				var convosPlot = document.getElementById('convos-plot');
+
+				Plotly.newPlot(viewsPlot, viewsData, viewsLayout);
+				Plotly.newPlot(likesPlot, likesData, likesLayout);
+				Plotly.newPlot(soldPlot, soldData, soldLayout);
+				Plotly.newPlot(convosPlot, convosData, convosLayout);
+			}
+		});
 
 		function renderStats(brandData) {
 			results.addClass('has-result');
-			results.find('#brand-name').text(brandData.name);
 			results.find('#brand-image').attr('src', brandData.logo);			
 		}
 	});
